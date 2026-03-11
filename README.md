@@ -1,47 +1,77 @@
 # Localized Sitemap Indexes
 
-`Localized Sitemap Indexes` is a public-plugin candidate extracted from the Storemaster maintenance work.
+Localized Sitemap Indexes is a WordPress plugin for multilingual sites that use TranslatePress, Rank Math SEO, and optionally NitroPack.
 
-It targets the specific stack:
+## Status
 
-- TranslatePress
-- Rank Math SEO
-- optionally NitroPack
+- Current development version: `0.2.0`
+- Intended as a public GitHub repository first
+- Kept intentionally narrow until the core sitemap behavior is well-tested
 
 ## What it does
 
 - keeps Rank Math's root `sitemap_index.xml` untouched
 - adds language-specific sitemap indexes such as `sitemap_index_en.xml`
 - generates language-specific child sitemaps such as `sitemap_en_product_1.xml`
-- mirrors Rank Math visibility decisions for post types and taxonomies
+- mirrors Rank Math sitemap visibility for enabled post types and taxonomies
+- mirrors Rank Math `noindex` exclusions and `items_per_page`
 - exposes an optional `nitro-warmup-sitemap.xml`
+- provides `wp localized-sitemaps list-indexes`
 - provides `wp localized-sitemaps sync-nitro`
 
-## Current scope
+## Scope boundaries
 
-This package is intentionally narrow and honest about that scope. It currently mirrors:
+This plugin is deliberately scoped around TranslatePress directory-based languages and the core Rank Math XML sitemap toggles for post types and taxonomies.
 
-- published TranslatePress languages
-- Rank Math XML sitemap object toggles for post types and taxonomies
-- Rank Math `noindex` exclusions
-- Rank Math `items_per_page`
+Current non-goals:
 
-It does not yet aim for full parity with every Rank Math sitemap provider.
+- full parity with every Rank Math sitemap provider
+- hreflang annotations inside sitemap XML
+- separate-domain TranslatePress language setups
 
-## Why this may be useful beyond Storemaster
+## Why this exists
 
-This is relevant for multilingual sites where:
+This is useful when:
 
-- the default Rank Math sitemap is intentionally kept lean
-- adding all localized URLs into the main sitemap is undesirable
-- cache warmup tools benefit from a separate multilingual sitemap target
+- the main Rank Math sitemap should remain lean
+- language-specific discovery paths are preferred over one combined sitemap tree
+- a cache warmer should target multilingual URLs through a separate index
 
-## Before a WordPress.org submission
+## Development
 
-Recommended next steps:
+Local quality checks use Composer and PHPCS:
 
-1. test against more TranslatePress setups
-2. validate behavior with different Rank Math sitemap combinations
-3. decide whether separate-domain TranslatePress setups should be supported
-4. add automated tests around sitemap visibility and robots output
-5. review naming carefully with respect to third-party product trademarks
+```bash
+composer install
+composer check
+```
+
+The default Composer scripts are:
+
+- `composer lint:php`
+- `composer lint:phpcs`
+- `composer check`
+
+## Extensibility
+
+The plugin already exposes filters for:
+
+- translated URL generation
+- language sitemap index entries
+- language child sitemap entries
+- Nitro warmup index entries
+
+That keeps the package generic while allowing project-specific integration work outside the plugin core.
+
+## Roadmap
+
+Near-term priorities:
+
+1. Add automated WordPress integration tests around sitemap visibility and `robots.txt`.
+2. Validate behavior across more TranslatePress language configurations.
+3. Decide whether separate-domain TranslatePress support belongs in scope.
+4. Document release and packaging steps for GitHub releases and future wp.org deployment.
+
+## License
+
+GPL-2.0-or-later

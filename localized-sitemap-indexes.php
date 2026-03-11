@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Localized Sitemap Indexes
  * Description:       Adds language-specific XML sitemap indexes for TranslatePress while mirroring Rank Math sitemap visibility rules.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Saskia Lund
@@ -19,11 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIZED_SITEMAP_INDEXES_VERSION', '0.1.0' );
+define( 'LOCALIZED_SITEMAP_INDEXES_VERSION', '0.2.0' );
 define( 'LOCALIZED_SITEMAP_INDEXES_FILE', __FILE__ );
 define( 'LOCALIZED_SITEMAP_INDEXES_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LOCALIZED_SITEMAP_INDEXES_URL', plugin_dir_url( __FILE__ ) );
 
 require_once LOCALIZED_SITEMAP_INDEXES_PATH . 'includes/class-localized-sitemap-indexes.php';
+
+register_activation_hook( __FILE__, array( 'Localized_Sitemap_Indexes', 'activate' ) );
 
 Localized_Sitemap_Indexes::bootstrap( __FILE__ );

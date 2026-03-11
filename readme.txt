@@ -4,7 +4,7 @@ Tags: sitemap, multilingual, translatepress, rank-math, nitropack
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,7 @@ Optional NitroPack support:
 - `robots.txt` advertisement for language-specific sitemap indexes
 - optional separate NitroPack warmup sitemap index
 - cache invalidation on language, sitemap, post, and term changes
+- `wp localized-sitemaps list-indexes` for operator-facing endpoint checks
 
 == Requirements ==
 
@@ -67,6 +68,10 @@ If you use NitroPack and want it to follow the dedicated warmup index:
 
 1. Run `wp localized-sitemaps sync-nitro`
 2. Start a fresh NitroPack warmup
+
+To inspect which top-level sitemap endpoints are currently available:
+
+1. Run `wp localized-sitemaps list-indexes`
 
 == Frequently Asked Questions ==
 
@@ -90,6 +95,10 @@ No. This plugin focuses on language-specific sitemap indexes and URLs. It does n
 
 No. NitroPack support is optional.
 
+= Does this support separate domains per language? =
+
+Not in the current scope. The first public versions target TranslatePress directory-based language URLs.
+
 == Limitations ==
 
 - The first public version is focused on post type and taxonomy sitemap parity.
@@ -97,6 +106,13 @@ No. NitroPack support is optional.
 - It assumes a TranslatePress URL-directory language setup rather than separate domains per language.
 
 == Changelog ==
+
+= 0.2.0 =
+
+- Added `wp localized-sitemaps list-indexes` for quick endpoint inspection
+- Added extra cache invalidation hooks for option lifecycle and status changes
+- Added public extension filters for sitemap entries and translated URLs
+- Added repository tooling for Composer, PHPCS, CI, and contribution workflows
 
 = 0.1.0 =
 

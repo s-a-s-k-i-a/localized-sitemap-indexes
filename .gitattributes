@@ -1,0 +1,12 @@
+/.editorconfig export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/CHANGELOG.md export-ignore
+/CONTRIBUTING.md export-ignore
+/README.md export-ignore
+/SECURITY.md export-ignore
+/composer.json export-ignore
+/composer.lock export-ignore
+/phpcs.xml.dist export-ignore
+/vendor export-ignore

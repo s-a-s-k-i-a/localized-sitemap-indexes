@@ -1,2 +1,7 @@
 .DS_Store
 Thumbs.db
+.idea/
+.phpunit.result.cache
+.vscode/
+node_modules/
+vendor/

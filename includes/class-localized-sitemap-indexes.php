@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Localized_Sitemap_Indexes {
-	const CACHE_GROUP         = 'localized_sitemap_indexes';
+	const CACHE_GROUP          = 'localized_sitemap_indexes';
 	const CACHE_VERSION_OPTION = 'localized_sitemap_indexes_cache_version';
 
 	/**
@@ -61,6 +61,13 @@ final class Localized_Sitemap_Indexes {
 	}
 
 	/**
+	 * @return void
+	 */
+	public static function activate() {
+		update_option( self::CACHE_VERSION_OPTION, (string) microtime( true ), false );
+	}
+
+	/**
 	 * @param string $plugin_file Main plugin file path.
 	 */
 	private function __construct( $plugin_file ) {
@@ -72,12 +79,19 @@ final class Localized_Sitemap_Indexes {
 
 		add_action( 'update_option_trp_settings', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'add_option_trp_settings', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'delete_option_trp_settings', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'add_option_rank-math-options-sitemap', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'update_option_rank-math-options-sitemap', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'delete_option_rank-math-options-sitemap', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'add_option_rank-math-options-titles', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'update_option_rank-math-options-titles', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'delete_option_rank-math-options-titles', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'save_post', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'transition_post_status', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'deleted_post', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'trashed_post', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'untrashed_post', array( $this, 'bump_cache_version' ), 10, 0 );
+		add_action( 'set_object_terms', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'created_term', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'edited_term', array( $this, 'bump_cache_version' ), 10, 0 );
 		add_action( 'delete_term', array( $this, 'bump_cache_version' ), 10, 0 );
@@ -106,6 +120,10 @@ final class Localized_Sitemap_Indexes {
 		add_filter( 'robots_txt', array( $this, 'filter_robots_txt' ), 30, 2 );
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::add_command(
+				'localized-sitemaps list-indexes',
+				array( $this, 'cli_list_indexes' )
+			);
 			WP_CLI::add_command(
 				'localized-sitemaps sync-nitro',
 				array( $this, 'cli_sync_nitro_warmup_sitemap' )
@@ -253,6 +271,60 @@ final class Localized_Sitemap_Indexes {
 	}
 
 	/**
+	 * @param array<int,string>  $args CLI positional arguments.
+	 * @param array<string,mixed> $assoc_args CLI associative arguments.
+	 * @return void
+	 */
+	public function cli_list_indexes( $args, $assoc_args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		if ( ! $this->dependencies_are_met() ) {
+			WP_CLI::error(
+				esc_html__(
+					'Localized Sitemap Indexes requires both Rank Math SEO and TranslatePress to list sitemap endpoints.',
+					'localized-sitemap-indexes'
+				)
+			);
+		}
+
+		$rows = array();
+
+		if ( $this->should_advertise_rank_math_root_index() ) {
+			$rows[] = array(
+				'type'       => 'rank-math-root',
+				'scope'      => 'global',
+				'advertised' => 'yes',
+				'url'        => home_url( '/sitemap_index.xml' ),
+			);
+		}
+
+		foreach ( $this->get_languages() as $language ) {
+			$rows[] = array(
+				'type'       => 'language-index',
+				'scope'      => $language['slug'],
+				'advertised' => ( ! empty( $language['is_default'] ) && ! $this->should_advertise_default_language_index() ) ? 'no' : 'yes',
+				'url'        => $this->get_language_index_url( $language['slug'] ),
+			);
+		}
+
+		if ( $this->should_expose_nitro_warmup_index() ) {
+			$rows[] = array(
+				'type'       => 'nitro-warmup',
+				'scope'      => 'global',
+				'advertised' => 'no',
+				'url'        => $this->get_nitro_warmup_index_url(),
+			);
+		}
+
+		if ( empty( $rows ) ) {
+			WP_CLI::warning(
+				esc_html__( 'No sitemap endpoints are available for the current configuration.', 'localized-sitemap-indexes' )
+			);
+			return;
+		}
+
+		WP_CLI\Utils\format_items( 'table', $rows, array( 'type', 'scope', 'advertised', 'url' ) );
+	}
+
+	/**
 	 * @return void
 	 */
 	public function bump_cache_version() {
@@ -341,6 +413,15 @@ final class Localized_Sitemap_Indexes {
 				}
 			}
 
+			$entries = $this->normalize_sitemap_entries(
+				apply_filters(
+					'localized_sitemap_indexes_language_index_entries',
+					$entries,
+					$language_slug,
+					$language
+				)
+			);
+
 			$xml = $this->wrap_sitemap_index( $entries );
 			wp_cache_set( $cache_key, $xml, self::CACHE_GROUP, $this->get_cache_ttl() );
 		}
@@ -372,6 +453,17 @@ final class Localized_Sitemap_Indexes {
 			} elseif ( $this->is_enabled_taxonomy( $object_name ) ) {
 				$entries = $this->build_taxonomy_entries( $object_name, $language['locale'], $page );
 			}
+
+			$entries = $this->normalize_sitemap_entries(
+				apply_filters(
+					'localized_sitemap_indexes_url_entries',
+					$entries,
+					$language_slug,
+					$object_name,
+					$page,
+					$language
+				)
+			);
 
 			if ( empty( $entries ) ) {
 				$this->render_not_found();
@@ -415,6 +507,15 @@ final class Localized_Sitemap_Indexes {
 					}
 				}
 			}
+
+			$entries = $this->normalize_sitemap_entries(
+				apply_filters(
+					'localized_sitemap_indexes_nitro_warmup_entries',
+					$entries,
+					$language_slugs,
+					$object_names
+				)
+			);
 
 			$xml = $this->wrap_sitemap_index( $entries );
 			wp_cache_set( $cache_key, $xml, self::CACHE_GROUP, $this->get_cache_ttl() );
@@ -465,7 +566,15 @@ final class Localized_Sitemap_Indexes {
 
 		wp_reset_postdata();
 
-		return $entries;
+		return $this->normalize_sitemap_entries(
+			apply_filters(
+				'localized_sitemap_indexes_post_entries',
+				$entries,
+				$post_type,
+				$locale,
+				$page
+			)
+		);
 	}
 
 	/**
@@ -492,7 +601,15 @@ final class Localized_Sitemap_Indexes {
 			);
 		}
 
-		return $entries;
+		return $this->normalize_sitemap_entries(
+			apply_filters(
+				'localized_sitemap_indexes_taxonomy_entries',
+				$entries,
+				$taxonomy,
+				$locale,
+				$page
+			)
+		);
 	}
 
 	/**
@@ -578,7 +695,7 @@ final class Localized_Sitemap_Indexes {
 	 */
 	private function get_rank_math_sitemap_options() {
 		if ( null === $this->rank_math_sitemap_options ) {
-			$options                      = get_option( 'rank-math-options-sitemap', array() );
+			$options                         = get_option( 'rank-math-options-sitemap', array() );
 			$this->rank_math_sitemap_options = is_array( $options ) ? $options : array();
 		}
 
@@ -590,7 +707,7 @@ final class Localized_Sitemap_Indexes {
 	 */
 	private function get_rank_math_title_options() {
 		if ( null === $this->rank_math_title_options ) {
-			$options                    = get_option( 'rank-math-options-titles', array() );
+			$options                       = get_option( 'rank-math-options-titles', array() );
 			$this->rank_math_title_options = is_array( $options ) ? $options : array();
 		}
 
@@ -851,23 +968,26 @@ final class Localized_Sitemap_Indexes {
 	 * @return string
 	 */
 	private function translate_url_for_locale( $url, $locale ) {
-		if ( ! class_exists( 'TRP_Translate_Press' ) ) {
-			return $url;
+		$translated_url = $url;
+
+		if ( class_exists( 'TRP_Translate_Press' ) ) {
+			$trp = TRP_Translate_Press::get_trp_instance();
+
+			if ( $trp && method_exists( $trp, 'get_component' ) ) {
+				$url_converter = $trp->get_component( 'url_converter' );
+
+				if ( $url_converter && method_exists( $url_converter, 'get_url_for_language' ) ) {
+					$translated_url = (string) $url_converter->get_url_for_language( $locale, $url, '' );
+				}
+			}
 		}
 
-		$trp = TRP_Translate_Press::get_trp_instance();
-
-		if ( ! $trp || ! method_exists( $trp, 'get_component' ) ) {
-			return $url;
-		}
-
-		$url_converter = $trp->get_component( 'url_converter' );
-
-		if ( ! $url_converter || ! method_exists( $url_converter, 'get_url_for_language' ) ) {
-			return $url;
-		}
-
-		return (string) $url_converter->get_url_for_language( $locale, $url, '' );
+		return (string) apply_filters(
+			'localized_sitemap_indexes_translated_url',
+			$translated_url,
+			$url,
+			$locale
+		);
 	}
 
 	/**
@@ -896,11 +1016,51 @@ final class Localized_Sitemap_Indexes {
 	}
 
 	/**
+	 * @param mixed $entries Candidate sitemap entries.
+	 * @return array<int,array<string,string>>
+	 */
+	private function normalize_sitemap_entries( $entries ) {
+		if ( ! is_array( $entries ) ) {
+			return array();
+		}
+
+		$normalized = array();
+
+		foreach ( $entries as $entry ) {
+			if ( ! is_array( $entry ) || ! isset( $entry['loc'] ) ) {
+				continue;
+			}
+
+			$location = trim( (string) $entry['loc'] );
+
+			if ( '' === $location ) {
+				continue;
+			}
+
+			$normalized_entry = array(
+				'loc' => $location,
+			);
+
+			if ( isset( $entry['lastmod'] ) ) {
+				$lastmod = trim( (string) $entry['lastmod'] );
+
+				if ( '' !== $lastmod ) {
+					$normalized_entry['lastmod'] = $lastmod;
+				}
+			}
+
+			$normalized[] = $normalized_entry;
+		}
+
+		return $normalized;
+	}
+
+	/**
 	 * @param array<int,array<string,string>> $entries Sitemap entries.
 	 * @return string
 	 */
 	private function wrap_sitemap_index( $entries ) {
-		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		$xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		$xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
 		foreach ( $entries as $entry ) {
@@ -924,7 +1084,7 @@ final class Localized_Sitemap_Indexes {
 	 * @return string
 	 */
 	private function wrap_url_set( $entries ) {
-		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		$xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		$xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
 		foreach ( $entries as $entry ) {

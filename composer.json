@@ -1,0 +1,49 @@
+{
+  "name": "saskialund/localized-sitemap-indexes",
+  "description": "Language-specific XML sitemap indexes for TranslatePress sites using Rank Math SEO.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Saskia Lund"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "sitemap",
+    "translatepress",
+    "rank-math"
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "squizlabs/php_codesniffer": "^3.10",
+    "wp-coding-standards/wpcs": "^3.1"
+  },
+  "scripts": {
+    "validate:composer": "composer validate --strict",
+    "lint:php": [
+      "@php -l localized-sitemap-indexes.php",
+      "@php -l includes/class-localized-sitemap-indexes.php",
+      "@php -l includes/index.php",
+      "@php -l languages/index.php",
+      "@php -l uninstall.php"
+    ],
+    "lint:phpcs": "phpcs",
+    "check": [
+      "@validate:composer",
+      "@lint:php",
+      "@lint:phpcs"
+    ]
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}

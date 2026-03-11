@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="Localized Sitemap Indexes">
+  <description>Project coding standards for the Localized Sitemap Indexes plugin.</description>
+
+  <file>localized-sitemap-indexes.php</file>
+  <file>includes</file>
+  <file>uninstall.php</file>
+
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <arg name="basepath" value="."/>
+  <arg name="colors"/>
+  <arg name="extensions" value="php"/>
+  <arg name="parallel" value="4"/>
+
+  <config name="minimum_supported_wp_version" value="6.0"/>
+  <config name="testVersion" value="7.4-"/>
+
+  <rule ref="WordPress-Core"/>
+  <rule ref="WordPress-Extra"/>
+  <rule ref="PHPCompatibilityWP"/>
+</ruleset>
