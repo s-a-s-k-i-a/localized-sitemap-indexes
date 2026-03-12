@@ -1,5 +1,5 @@
 === Localized Sitemap Indexes ===
-Contributors: saskialund
+Contributors: jyria
 Tags: sitemap, multilingual, translatepress, rank-math, nitropack
 Requires at least: 6.0
 Tested up to: 6.9
