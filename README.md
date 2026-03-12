@@ -51,6 +51,20 @@ The default Composer scripts are:
 - `composer lint:php`
 - `composer lint:phpcs`
 - `composer check`
+- `composer i18n:pot`
+- `composer build:zip`
+
+Translation template updates use WP-CLI's i18n command:
+
+```bash
+composer i18n:pot
+```
+
+Release archives are built from the current Git commit:
+
+```bash
+composer build:zip
+```
 
 ## Extensibility
 

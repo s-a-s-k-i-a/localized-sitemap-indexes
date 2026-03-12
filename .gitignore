@@ -3,5 +3,6 @@ Thumbs.db
 .idea/
 .phpunit.result.cache
 .vscode/
+build/
 node_modules/
 vendor/

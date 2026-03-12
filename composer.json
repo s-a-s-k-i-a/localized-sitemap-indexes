@@ -34,6 +34,8 @@
       "@php -l uninstall.php"
     ],
     "lint:phpcs": "phpcs",
+    "i18n:pot": "sh bin/update-pot.sh",
+    "build:zip": "sh bin/build-release.sh",
     "check": [
       "@validate:composer",
       "@lint:php",

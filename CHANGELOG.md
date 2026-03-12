@@ -6,6 +6,7 @@
 - Add activation and uninstall lifecycle housekeeping for plugin cache metadata.
 - Add `wp localized-sitemaps list-indexes` for operational visibility.
 - Add extension filters for translated URLs and generated sitemap entries.
+- Add a first POT file plus small scripts for release ZIP and translation template generation.
 
 ## 0.2.0
 

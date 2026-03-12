@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Localized Sitemap Indexes 0.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/s-a-s-k-i-a/localized-sitemap-indexes/issues\n"
+"POT-Creation-Date: 2026-03-12 10:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Codex\n"
+"X-Domain: localized-sitemap-indexes\n"
+
+#: includes/class-localized-sitemap-indexes.php:155
+msgid "Localized Sitemap Indexes requires both Rank Math SEO and TranslatePress to be active."
+msgstr ""
+
+#: includes/class-localized-sitemap-indexes.php:240
+msgid "NitroPack is not active, so the warmup sitemap cannot be synced."
+msgstr ""
+
+#: includes/class-localized-sitemap-indexes.php:248
+msgid "NitroPack SDK is not available."
+msgstr ""
+
+#. translators: %s: sitemap URL
+#: includes/class-localized-sitemap-indexes.php:267
+msgid "NitroPack warmup sitemap set to %s"
+msgstr ""
+
+#: includes/class-localized-sitemap-indexes.php:282
+msgid "Localized Sitemap Indexes requires both Rank Math SEO and TranslatePress to list sitemap endpoints."
+msgstr ""
+
+#: includes/class-localized-sitemap-indexes.php:319
+msgid "No sitemap endpoints are available for the current configuration."
+msgstr ""

@@ -13,7 +13,11 @@ Keep this plugin generic.
 ```bash
 composer install
 composer check
+composer i18n:pot
+composer build:zip
 ```
+
+`composer i18n:pot` expects WP-CLI with the i18n command to be available on your machine.
 
 ## Pull requests
 
