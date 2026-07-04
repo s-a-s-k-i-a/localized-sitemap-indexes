@@ -66,6 +66,12 @@ Release archives are built from the current Git commit:
 composer build:zip
 ```
 
+## Releases
+
+Installable plugin ZIPs are published on the
+[GitHub releases page](https://github.com/s-a-s-k-i-a/localized-sitemap-indexes/releases).
+Releases are tag-driven; the process is documented in [RELEASING.md](RELEASING.md).
+
 ## Extensibility
 
 The plugin already exposes filters for:
@@ -84,7 +90,6 @@ Near-term priorities:
 1. Add automated WordPress integration tests around sitemap visibility and `robots.txt`.
 2. Validate behavior across more TranslatePress language configurations.
 3. Decide whether separate-domain TranslatePress support belongs in scope.
-4. Document release and packaging steps for GitHub releases and future wp.org deployment.
 
 ## License
 

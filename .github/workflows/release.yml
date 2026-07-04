@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Lint PHP files
+        run: composer lint:php
+
+      - name: Run PHPCS
+        run: composer lint:phpcs
+
+      - name: Check version consistency
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          header_version="$(sed -n 's/^ \* Version:[[:space:]]*//p' localized-sitemap-indexes.php | head -n 1 | tr -d '\r')"
+          constant_version="$(sed -n "s/^define( 'LOCALIZED_SITEMAP_INDEXES_VERSION', '\(.*\)' );/\1/p" localized-sitemap-indexes.php | head -n 1)"
+          stable_tag="$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | head -n 1 | tr -d '\r')"
+          echo "Tag: $tag_version"
+          echo "Plugin header: $header_version"
+          echo "Version constant: $constant_version"
+          echo "readme.txt stable tag: $stable_tag"
+          if [ "$tag_version" != "$header_version" ] || [ "$tag_version" != "$constant_version" ] || [ "$tag_version" != "$stable_tag" ]; then
+            echo "Version mismatch between tag, plugin header, version constant, and readme.txt stable tag." >&2
+            exit 1
+          fi
+
+      - name: Build release ZIP
+        run: composer build:zip
+
+      - name: Extract release notes
+        run: sh bin/release-notes.sh "${GITHUB_REF_NAME#v}" > "$RUNNER_TEMP/release-notes.md"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: Localized Sitemap Indexes ${{ github.ref_name }}
+          body_path: ${{ runner.temp }}/release-notes.md
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          files: build/localized-sitemap-indexes-*.zip

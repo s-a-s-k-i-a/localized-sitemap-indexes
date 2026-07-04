@@ -1,20 +1,23 @@
 # Changelog
 
+All notable changes to this plugin are documented in this file. Each released
+version has a matching Git tag in the form `vX.Y.Z` and a GitHub release with
+an installable plugin ZIP.
+
 ## Unreleased
 
-- Build out public-repository tooling with Composer, PHPCS, CI, and contribution templates.
-- Add activation and uninstall lifecycle housekeeping for plugin cache metadata.
-- Add `wp localized-sitemaps list-indexes` for operational visibility.
-- Add extension filters for translated URLs and generated sitemap entries.
-- Add a first POT file plus small scripts for release ZIP and translation template generation.
+- Nothing yet.
 
-## 0.2.0
+## 0.2.0 - 2026-07-04
 
-- Add `wp localized-sitemaps list-indexes`.
+- Add `wp localized-sitemaps list-indexes` for operational endpoint visibility.
 - Expand cache invalidation hooks for sitemap-related option lifecycle changes.
-- Add repository-level development and contribution metadata.
+- Add activation and uninstall lifecycle housekeeping for plugin cache metadata.
+- Add extension filters for translated URLs and generated sitemap entries.
+- Build out public-repository tooling: Composer scripts, PHPCS, CI, contribution
+  templates, release ZIP build, and translation template generation.
 
-## 0.1.0
+## 0.1.0 - 2026-03-11
 
 - Initial plugin bootstrap.
 - Add language-specific sitemap indexes for TranslatePress.
