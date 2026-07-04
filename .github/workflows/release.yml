@@ -61,7 +61,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
         with:
-          name: Localized Sitemap Indexes ${{ github.ref_name }}
+          name: Language Sitemaps for TranslatePress ${{ github.ref_name }}
           body_path: ${{ runner.temp }}/release-notes.md
           prerelease: ${{ contains(github.ref_name, '-') }}
           files: build/localized-sitemap-indexes-*.zip

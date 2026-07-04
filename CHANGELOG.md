@@ -8,6 +8,12 @@ an installable plugin ZIP.
 
 - Nothing yet.
 
+## 0.3.1 - 2026-07-04
+
+- Rename the display name to "Language Sitemaps for TranslatePress". The
+  technical slug, plugin folder, and text domain stay
+  `localized-sitemap-indexes`.
+
 ## 0.3.0 - 2026-07-04
 
 - Add EDD Software Licensing SDK integration so copies installed from the

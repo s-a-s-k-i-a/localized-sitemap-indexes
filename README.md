@@ -1,10 +1,10 @@
-# Localized Sitemap Indexes
+# Language Sitemaps for TranslatePress
 
-Localized Sitemap Indexes is a WordPress plugin for multilingual sites that use TranslatePress, Rank Math SEO, and optionally NitroPack.
+Language Sitemaps for TranslatePress (technical slug: `localized-sitemap-indexes`) is a WordPress plugin for multilingual sites that use TranslatePress, Rank Math SEO, and optionally NitroPack.
 
 ## Status
 
-- Current development version: `0.3.0`
+- Current development version: `0.3.1`
 - Intended as a public GitHub repository first
 - Kept intentionally narrow until the core sitemap behavior is well-tested
 

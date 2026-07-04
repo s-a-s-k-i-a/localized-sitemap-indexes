@@ -1,10 +1,10 @@
-=== Localized Sitemap Indexes ===
+=== Language Sitemaps for TranslatePress ===
 Contributors: jyria
 Tags: sitemap, multilingual, translatepress, rank-math, nitropack
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Adds language-specific XML sitemap indexes for TranslatePress while mirroring Ra
 
 == Description ==
 
-Localized Sitemap Indexes is for WordPress sites that use:
+Language Sitemaps for TranslatePress (technical slug: `localized-sitemap-indexes`) is for WordPress sites that use:
 
 - TranslatePress for language directories
 - Rank Math SEO for XML sitemaps
@@ -110,6 +110,10 @@ Copies installed from the isla-stud.io store include automatic updates: activate
 - It assumes a TranslatePress URL-directory language setup rather than separate domains per language.
 
 == Changelog ==
+
+= 0.3.1 =
+
+- Renamed the display name to "Language Sitemaps for TranslatePress" (technical slug and text domain unchanged)
 
 = 0.3.0 =
 
