@@ -8,6 +8,12 @@ an installable plugin ZIP.
 
 - Nothing yet.
 
+## 0.3.2 - 2026-07-04
+
+- Add the `Update URI` plugin header so WordPress only accepts updates for
+  this plugin slug from the isla-stud.io store, never from wordpress.org
+  lookalikes.
+
 ## 0.3.1 - 2026-07-04
 
 - Rename the display name to "Language Sitemaps for TranslatePress". The

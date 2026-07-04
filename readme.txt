@@ -4,7 +4,7 @@ Tags: sitemap, multilingual, translatepress, rank-math, nitropack
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,10 @@ Copies installed from the isla-stud.io store include automatic updates: activate
 - It assumes a TranslatePress URL-directory language setup rather than separate domains per language.
 
 == Changelog ==
+
+= 0.3.2 =
+
+- Added the Update URI plugin header so only the isla-stud.io store can serve updates for this plugin slug
 
 = 0.3.1 =
 
