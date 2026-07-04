@@ -4,7 +4,7 @@ Tags: sitemap, multilingual, translatepress, rank-math, nitropack
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,10 @@ No. NitroPack support is optional.
 
 Not in the current scope. The first public versions target TranslatePress directory-based language URLs.
 
+= How do I get plugin updates? =
+
+Copies installed from the isla-stud.io store include automatic updates: activate the free license key from your order in the Plugins list and updates arrive through the regular WordPress update mechanism. Installable ZIPs are also published on the GitHub releases page for manual updates.
+
 == Limitations ==
 
 - The first public version is focused on post type and taxonomy sitemap parity.
@@ -106,6 +110,10 @@ Not in the current scope. The first public versions target TranslatePress direct
 - It assumes a TranslatePress URL-directory language setup rather than separate domains per language.
 
 == Changelog ==
+
+= 0.3.0 =
+
+- Added automatic plugin updates for copies installed from the isla-stud.io store (EDD Software Licensing)
 
 = 0.2.0 =
 

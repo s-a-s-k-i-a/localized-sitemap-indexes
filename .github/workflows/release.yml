@@ -51,6 +51,8 @@ jobs:
           fi
 
       - name: Build release ZIP
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ github.token }}"}}'
         run: composer build:zip
 
       - name: Extract release notes
@@ -63,3 +65,27 @@ jobs:
           body_path: ${{ runner.temp }}/release-notes.md
           prerelease: ${{ contains(github.ref_name, '-') }}
           files: build/localized-sitemap-indexes-*.zip
+
+      # Hand the new release off to isla-stud.io: the mu-plugin there triggers
+      # the EDD Git Download Updater to localize the release ZIP into
+      # wp-content/uploads/edd/ and bumps the EDD Software Licensing version,
+      # so store-installed copies see the update. Webhook is HMAC-SHA256-signed
+      # with a shared secret (repo secret WEBHOOK_SECRET, mirrored in the
+      # wp_option fbp_webhook_secret on isla-stud.io; never committed). The
+      # step fails the workflow on non-2xx.
+      - name: Notify isla-stud.io to localize the new release ZIP
+        env:
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+        run: |
+          PAYLOAD=$(printf '{"repo":"%s","tag":"%s"}' "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME")
+          SIGNATURE="sha256=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" -hex | awk '{print $NF}')"
+          HTTP_CODE=$(curl -sS -o /tmp/webhook-response.json -w '%{http_code}' \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            -H "X-Fbp-Signature: $SIGNATURE" \
+            -d "$PAYLOAD" \
+            'https://isla-stud.io/wp-json/fbp-webhooks/v1/release')
+          echo "Webhook HTTP $HTTP_CODE"
+          cat /tmp/webhook-response.json
+          echo
+          test "$HTTP_CODE" -ge 200 && test "$HTTP_CODE" -lt 300

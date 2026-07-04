@@ -4,7 +4,7 @@ Localized Sitemap Indexes is a WordPress plugin for multilingual sites that use 
 
 ## Status
 
-- Current development version: `0.2.0`
+- Current development version: `0.3.0`
 - Intended as a public GitHub repository first
 - Kept intentionally narrow until the core sitemap behavior is well-tested
 

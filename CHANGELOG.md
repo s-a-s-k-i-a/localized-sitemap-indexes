@@ -8,6 +8,12 @@ an installable plugin ZIP.
 
 - Nothing yet.
 
+## 0.3.0 - 2026-07-04
+
+- Add EDD Software Licensing SDK integration so copies installed from the
+  isla-stud.io store receive automatic plugin updates.
+- Ship production Composer dependencies inside the release ZIP.
+
 ## 0.2.0 - 2026-07-04
 
 - Add `wp localized-sitemaps list-indexes` for operational endpoint visibility.

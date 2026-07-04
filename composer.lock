@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b6ba6c9267a400f8e55698b0a79dcc4",
-    "packages": [],
+    "content-hash": "a6f6027937079951b17730d634c83d39",
+    "packages": [
+        {
+            "name": "easy-digital-downloads/edd-sl-sdk",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awesomemotive/edd-sl-sdk.git",
+                "reference": "757cefcf9bd394f86e2f852bf286c325a5df1076"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awesomemotive/edd-sl-sdk/zipball/757cefcf9bd394f86e2f852bf286c325a5df1076",
+                "reference": "757cefcf9bd394f86e2f852bf286c325a5df1076",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "dev-master",
+                "phpunit/phpunit": "^8",
+                "yoast/phpunit-polyfills": "^1.0.5",
+                "yoast/wp-test-utils": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyDigitalDownloads\\Updater\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "support": {
+                "source": "https://github.com/awesomemotive/edd-sl-sdk/tree/1.0.3",
+                "issues": "https://github.com/awesomemotive/edd-sl-sdk/issues"
+            },
+            "time": "2026-03-16T17:14:57+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
