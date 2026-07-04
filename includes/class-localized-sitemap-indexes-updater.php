@@ -25,6 +25,31 @@ final class Localized_Sitemap_Indexes_Updater {
 	 */
 	public static function bootstrap() {
 		add_action( 'edd_sl_sdk_registry', array( __CLASS__, 'register_with_sdk' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_license_trigger_fallback' ) );
+	}
+
+	/**
+	 * The SDK binds its "Manage License" click listener only after its footer
+	 * script has executed; on heavy plugin screens that leaves a multi-second
+	 * window in which the button is visible but clicks are silently ignored.
+	 * This head script catches those early clicks, shows the core spinner
+	 * state, and re-dispatches the click once the SDK is ready.
+	 *
+	 * @param string $hook_suffix Current admin page hook suffix.
+	 * @return void
+	 */
+	public static function enqueue_license_trigger_fallback( $hook_suffix ) {
+		if ( 'plugins.php' !== $hook_suffix ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'localized-sitemap-indexes-license-trigger',
+			LOCALIZED_SITEMAP_INDEXES_URL . 'assets/js/license-trigger-fallback.js',
+			array(),
+			LOCALIZED_SITEMAP_INDEXES_VERSION,
+			false
+		);
 	}
 
 	/**

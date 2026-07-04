@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Language Sitemaps for TranslatePress
  * Description:       Adds language-specific XML sitemap indexes for TranslatePress while mirroring Rank Math sitemap visibility rules.
- * Version:           0.3.2
+ * Version:           0.3.3
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Saskia Teichmann
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIZED_SITEMAP_INDEXES_VERSION', '0.3.2' );
+define( 'LOCALIZED_SITEMAP_INDEXES_VERSION', '0.3.3' );
 define( 'LOCALIZED_SITEMAP_INDEXES_FILE', __FILE__ );
 define( 'LOCALIZED_SITEMAP_INDEXES_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LOCALIZED_SITEMAP_INDEXES_URL', plugin_dir_url( __FILE__ ) );

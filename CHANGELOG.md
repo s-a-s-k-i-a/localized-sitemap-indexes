@@ -8,6 +8,13 @@ an installable plugin ZIP.
 
 - Nothing yet.
 
+## 0.3.3 - 2026-07-04
+
+- Fix the silent pre-init dead window of the "Manage License" trigger in the
+  plugins list: clicks before the EDD SL SDK footer script has executed now
+  show the core spinner state and open the license modal as soon as the SDK
+  is ready (GH-2).
+
 ## 0.3.2 - 2026-07-04
 
 - Add the `Update URI` plugin header so WordPress only accepts updates for

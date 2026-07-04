@@ -4,7 +4,7 @@ Language Sitemaps for TranslatePress (technical slug: `localized-sitemap-indexes
 
 ## Status
 
-- Current development version: `0.3.2`
+- Current development version: `0.3.3`
 - Intended as a public GitHub repository first
 - Kept intentionally narrow until the core sitemap behavior is well-tested
 
